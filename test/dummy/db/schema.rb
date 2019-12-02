@@ -15,6 +15,12 @@ ActiveRecord::Schema.define(version: 20191202155608) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "accounts", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "book_audits", force: :cascade do |t|
     t.integer  "book_id"
     t.string   "test"
@@ -26,21 +32,26 @@ ActiveRecord::Schema.define(version: 20191202155608) do
   create_table "books", force: :cascade do |t|
     t.string   "title"
     t.string   "author"
+    t.integer  "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_books_on_account_id", using: :btree
   end
 
   create_table "stardust_events", force: :cascade do |t|
     t.integer "hook_id"
-    t.text    "content"
+    t.binary  "content"
     t.index ["hook_id"], name: "index_stardust_events_on_hook_id", using: :btree
   end
 
   create_table "stardust_hooks", force: :cascade do |t|
-    t.string "name"
-    t.string "target_url"
-    t.text   "configuration"
-    t.text   "events",        default: [], array: true
+    t.string  "name"
+    t.string  "target_url"
+    t.string  "referenceable_type"
+    t.integer "referenceable_id"
+    t.text    "configuration"
+    t.text    "events",             default: [], array: true
+    t.index ["referenceable_type", "referenceable_id"], name: "index_stardust_hooks_on_referenceable_type_and_referenceable_id", using: :btree
   end
 
   add_foreign_key "book_audits", "books"

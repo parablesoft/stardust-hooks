@@ -67,14 +67,11 @@ class Stardust::Hooks::SubscriptionManager
 
   def self.create_subscription(event)
     Stardust::Hooks::Subscription.new(event_name: event).subscribe do |e|
-      dealer_id = e[:hook_scope] ? 
-        e[:hook_scope].id : 
-        nil
 
       event_name = e[:name]
 
       Stardust::Hooks::Hook
-        .matching_hooks(dealer_id,event_name)
+        .matching_hooks(e[:hook_scope],event_name)
         .each do |hook|
 
         Stardust::Hooks::HookHandler.new(

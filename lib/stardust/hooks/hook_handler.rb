@@ -18,9 +18,9 @@ class Stardust::Hooks::HookHandler
     :event
 
   def stored_event
-    @stored_event ||= Stardust::Hooks::Event.create(
+    @stored_event ||= Stardust::Hooks::Event.create!(
       hook: hook,
-      content: event.to_yaml
+      content: Marshal.dump(event)
     )
   end
 

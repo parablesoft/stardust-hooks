@@ -1,12 +1,17 @@
 class Book < ApplicationRecord
   include Stardust::Hooks::Hook::Publishable
 
-  has_many :book_audits
+  has_many :book_audits, dependent: :destroy
+  belongs_to :account
+
+  def audit_stamp
+    "#{title} - #{author} - STAMPED"
+  end
 
   private
 
   def hook_scope
-    self
+    self.account
   end
 
   def publishable_attributes

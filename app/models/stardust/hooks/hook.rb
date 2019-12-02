@@ -2,15 +2,18 @@ class Stardust::Hooks::Hook < ActiveRecord::Base
 
   include Publishable
 
-  # belongs_to :dealer, optional: true
+  belongs_to :referenceable, optional: true, polymorphic: true
 
   def self.table_name
     'stardust_hooks'
   end
 
-  scope :matching_hooks,  -> (dealer_id,event_name) do
-    # where("dealer_id = ? or dealer_id is null", dealer_id)
-    where('events @> ARRAY[?]::text[]', Array(event_name))
+  scope :matching_hooks,  -> (referenceable,event_name) do
+    where("(referenceable_id = ? and referenceable_type = ?) or referenceable_id is null", 
+          referenceable.try(:id), 
+          referenceable.try(:class).try(:name)
+         )
+      .where('events @> ARRAY[?]::text[]', Array(event_name))
   end
 
   def self.tracked_events_uniq

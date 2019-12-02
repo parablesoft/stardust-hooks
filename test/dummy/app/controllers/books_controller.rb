@@ -1,19 +1,31 @@
 class BooksController < ApplicationController
 
 
+  def index
+    @books = Book.all
+  end
+
   def new
     @book = Book.new
-    @book_count = Book.count
   end
 
   def create
+   @book = Book.create(create_params)
+    redirect_to @book
+  end
 
-    Book.create(
-    title: "Foo",
-    author: "Bar"
+  def show
+    @book = Book.find(params[:id])
+  end
+
+  private
+
+  def create_params
+
+    params.require(:book).permit(
+      :author, 
+      :account_id, 
+      :title
     )
-
-
-    redirect_to new_book_url
   end
 end

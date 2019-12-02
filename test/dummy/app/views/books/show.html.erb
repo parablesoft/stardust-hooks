@@ -1,0 +1,20 @@
+<h1>Book Details</h1>
+
+
+Title: <%=@book.title%><br/>
+Author: <%=@book.author%>
+
+<div>
+  <strong>Account</strong>
+  <%=@book.account.name%>
+</div>
+
+<hr>
+<h2>Book Audits</h2>
+
+<% @book.book_audits.each do |audit|%>
+  <p><%=audit.test%></p>
+<% end %>
+
+<hr>
+<%=link_to "Create another book", new_book_path%>
