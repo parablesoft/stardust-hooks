@@ -28,5 +28,4 @@ class Stardust::Hooks::HookHandler
 end
 
 require_relative "dsl"
-require_relative "event"
 require_relative "workers/async_worker"

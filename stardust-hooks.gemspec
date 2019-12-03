@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", "~> 5.0.2"
   spec.add_dependency "sidekiq", "~> 5.2.1"
   spec.add_dependency "pg"
+  spec.add_dependency "stardust_rails"
   spec.add_development_dependency "byebug"
 
 end
