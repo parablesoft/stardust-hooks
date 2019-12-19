@@ -8,15 +8,7 @@ Stardust::GraphQL.define_mutation :stardust_hooks_update do
     loads: Stardust::Hooks::Hook,
     as: :hook
 
-  argument :attributes, :details, required: true
-
-  argument :referenceable_id, 
-    :id, 
-    required: false
-
-  argument :referenceable_type, 
-    :string, 
-    required: false
+  argument :attributes, :hook_update_attributes, required: true
 
   field :hook, :hook, null: true
   field :error, :string, null: true
@@ -24,39 +16,16 @@ Stardust::GraphQL.define_mutation :stardust_hooks_update do
   null false
 
 
-  def resolve(hook:, attributes:, referenceable_id:, referenceable_type:)
-    @attributes = attributes
-    @referenceable_id = referenceable_id
-    @referenceable_type = referenceable_type
-    hook.update_attributes(attributes_for_update)
+  def resolve(hook:, attributes:)
+    hook.update_attributes(attributes.to_h)
 
     {
       hook: hook,
       error: nil
     }
-
-
   end
-
-
 
   private
-
-  attr_reader :attributes,
-    :referenceable_id,
-    :referenceable_type
-
-  def attributes_for_update
-    output = attributes.to_unsafe_h
-    output.merge!(
-      {
-        referenceable_id: referenceable_id,
-        referenceable_type: referenceable_type
-      }
-    )
-    output
-  end
-
 
   def self.authorized?(_, ctx)
     current_user = ctx[:current_user]

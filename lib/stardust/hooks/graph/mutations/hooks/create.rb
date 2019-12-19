@@ -3,7 +3,7 @@ Stardust::GraphQL.define_mutation :stardust_hooks_create do
   description "Creates a hook"
 
 
-  argument :attributes, :details, required: true
+  argument :attributes, :hook_create_attributes, required: true
 
   field :hook, :hook, null: true
   field :error, :string, null: true
@@ -12,7 +12,7 @@ Stardust::GraphQL.define_mutation :stardust_hooks_create do
 
 
   def resolve(attributes:)
-    attrs = attributes.to_unsafe_h.merge!(events: [])
+    attrs = attributes.to_h.merge!(events: [])
     hook = Stardust::Hooks::Hook.create(attrs)
 
     {
