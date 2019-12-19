@@ -22,6 +22,12 @@ $ rake db:migrate
 
 Create an initializer with the following:
 ```ruby
+
+#Pass an array of roles that are permitted to manage the hooks
+Stardust::Hooks.configure do |config|
+  config.manager_roles = []
+end
+
 Stardust::Hooks::SubscriptionManager.create_subscriptions
 ```
 
@@ -49,6 +55,10 @@ load 'stardust/hooks/graph/types.rb'
 
 
 ## Usage
+
+
+
+
 
 ### Include in your models
 

@@ -25,6 +25,6 @@ Stardust::GraphQL.define_query :stardust_hook do
   end
 
   def self.permitted_roles
-    ["admin"].freeze
+    Stardust::Hooks.configuration.manager_roles
   end
 end

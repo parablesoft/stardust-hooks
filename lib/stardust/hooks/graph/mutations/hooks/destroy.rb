@@ -34,7 +34,7 @@ Stardust::GraphQL.define_mutation :stardust_hooks_destroy do
   end
 
   def self.permitted_roles
-    ["admin"]
+    Stardust::Hooks.configuration.manager_roles
   end
 
 
