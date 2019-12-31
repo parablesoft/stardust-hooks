@@ -1,7 +1,12 @@
+require_relative "./../helpers.rb"
+
 module Stardust
   module Hooks
     class DSL
       class Operation
+
+        include Stardust::Hooks::Helpers
+
 
         attr_reader :name
 

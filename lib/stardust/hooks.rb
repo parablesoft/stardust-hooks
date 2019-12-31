@@ -1,9 +1,17 @@
 require "stardust/hooks/engine" 
 require "sidekiq"
+require_relative "hooks/configuration"
 
 module Stardust
   module Hooks
-    # Your code goes here...
+
+    def self.configuration
+      @configuration ||= Configuration.new
+    end
+
+    def self.configure
+      yield(configuration)
+    end
   end
 end
 
