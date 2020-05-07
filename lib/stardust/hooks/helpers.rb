@@ -5,13 +5,14 @@ module Stardust::Hooks::Helpers
     action_mailer.try(:asset_host,nil)
   end
 
-  def send_email(to:, subject:,content:, cc:nil, bcc:nil,attachments: [])
+  def send_email(to:, subject:,content:, cc:nil, bcc:nil,attachments: [],from: nil)
     Stardust::Hooks::HooksMailer.generic_message(
       to: to,
       subject: subject,
       content: content,
       cc: cc,
       bcc: bcc,
+      from: from,
       attachments: attachments
     ).deliver_now
   end
