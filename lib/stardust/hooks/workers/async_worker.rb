@@ -23,7 +23,13 @@ module Stardust
 
         def event
           # @event ||= YAML.load(event_data.content)
-          @event ||= Marshal.load(event_data.content)
+          @event ||= load_event
+        end
+
+        def load_event
+          output = Marshal.load(event_data.content)
+          output[:model] = output[:model_type].constantize.find(output[:model_id])
+          output
         end
 
         def hook

@@ -20,8 +20,15 @@ class Stardust::Hooks::HookHandler
   def stored_event
     @stored_event ||= Stardust::Hooks::Event.create!(
       hook: hook,
-      content: Marshal.dump(event)
+      content: dumped_event
     )
+  end
+
+  def dumped_event
+    event[:model_id] = event[:model].id
+    event[:model_type] = event[:model].class.name
+    event[:model] = nil
+    Marshal.dump(event)
   end
 
 
