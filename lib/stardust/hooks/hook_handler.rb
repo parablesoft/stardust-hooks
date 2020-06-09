@@ -25,9 +25,11 @@ class Stardust::Hooks::HookHandler
   end
 
   def dumped_event
-    event[:model_id] = event[:model].id
-    event[:model_type] = event[:model].class.name
-    event[:model] = nil
+    if event[:model]
+      event[:model_id] = event[:model].id
+      event[:model_type] = event[:model].class.name
+      event[:model] = nil
+    end
     Marshal.dump(event)
   end
 
