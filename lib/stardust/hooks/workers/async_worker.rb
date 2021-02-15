@@ -28,7 +28,7 @@ module Stardust
 
         def load_event
           output = Marshal.load(event_data.content)
-          output[:model] = output[:model_type].constantize.find(output[:model_id])
+          output[:model] = output[:model_type].constantize.find_by(id: output[:model_id])
           output
         end
 
