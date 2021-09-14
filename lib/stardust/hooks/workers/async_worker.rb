@@ -6,8 +6,6 @@ module Stardust
         include ::Sidekiq::Worker
 
         def perform(event_id)
-          # puts Book.first.title
-          # puts Account.first.name
           @event_id = event_id
           process_event
           destroy_event

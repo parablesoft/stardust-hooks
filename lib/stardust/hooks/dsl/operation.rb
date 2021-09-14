@@ -4,11 +4,9 @@ module Stardust
   module Hooks
     class DSL
       class Operation
+        attr_reader :name
 
         include Stardust::Hooks::Helpers
-
-
-        attr_reader :name
 
         def initialize(name=nil)
           @name = name
@@ -32,6 +30,10 @@ module Stardust
           end
         end
 
+        def model
+          event[:model]
+        end
+
         def condition(condition = nil, &block)
           if block_given?
             @condition = block
@@ -45,6 +47,28 @@ module Stardust
         private 
         attr_reader :event
 
+        def method_missing(method, args)
+          m = method.to_s
+          if m.starts_with?(FIELD_CHANGED_PREFIX)
+            field = m.split(FIELD_CHANGED_PREFIX).last
+            field_changed(field, args)
+          else
+            super(method)
+          end
+        end
+
+        FIELD_CHANGED_PREFIX = "change_to_"
+
+        def field_changed(field, field_value)
+          model = event[:model]
+          event[:changes].has_key?(field) &&
+            if field_value.is_a?(Hash)
+              event[:changes][field].first == field_value[:from] &&
+              event[:changes][field].last == field_value[:to]
+            else
+              model[field] == field_value
+            end
+        end
       end
     end
   end
